@@ -10,6 +10,5 @@ module.exports = {
     copy({
       targets: [{ src: "index.html", dest: "dist" }],
     }),
-    nodeResolve(),
   ],
 };

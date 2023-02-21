@@ -9,10 +9,10 @@ let score = 0;
 let scrollSpeed = 3;
 
 function preload() {
-  rollImg = loadImage("./images/roll.png");
-  cloudsImg = loadImage("./images/clouds.png");
-  strawberryImg = loadImage("./images/strawberry.png");
-  poisonImg = loadImage("./images/poison.png");
+  rollImg = loadImage("/images/roll.png");
+  cloudsImg = loadImage("/images/clouds.png");
+  strawberryImg = loadImage("/images/strawberry.png");
+  poisonImg = loadImage("/images/poison.png");
 }
 
 function setup() {

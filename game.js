@@ -1,18 +1,21 @@
-let roll, clouds, strawberry, poison;
-let rollImg, cloudsImg, strawberryImg, poisonImg;
-let strawberryG;
+let roll, clouds, strawberry, poison, flour, cake;
+let rollImg, cloudsImg, strawberryImg, poisonImg, flourImg, cakeImg;
+let strawberryG, flourG, poisonG;
 let x1 = 0;
 let x2;
 let vis = 0;
 let score = 0;
+let gameOver = false;
 
 let scrollSpeed = 3;
 
 function preload() {
-  rollImg = loadImage("/images/roll.png");
-  cloudsImg = loadImage("/images/clouds.png");
-  strawberryImg = loadImage("/images/strawberry.png");
-  poisonImg = loadImage("/images/poison.png");
+  rollImg = loadImage("roll.png");
+  cloudsImg = loadImage("clouds.png");
+  strawberryImg = loadImage("strawberry.png");
+  poisonImg = loadImage("poison.png");
+  flourImg = loadImage("flour.png");
+  cakeImg = loadImage("cake.png");
 }
 
 function setup() {
@@ -21,22 +24,27 @@ function setup() {
   
   strawberryG = new Group();
   poisonG = new Group();
-
+  flourG = new Group();
+  
+  // createStrawberry(); 
+  
+  i1 = round(random(500));
+  i2 = round(random(500));
+  
   
   roll = new Sprite();
   roll.addImg(rollImg);
   
+
+  
   // roll.overlaps(strawberryG, collect);
   
-  block = new Sprite(250, 250, 20, 20);
-  roll.overlaps(block, collect);
-  roll.overlaps(poisonG, die);
+
+  //roll.overlaps(poisonG, die);
+  
 }
 
-function die(roll, poison) {
-  strawberry.remove();
-  roll.y = 250;
-}
+
 function draw() {
   clear();
   background(209, 240, 255);
@@ -44,11 +52,11 @@ function draw() {
   // score text
   textSize(20);
   fill(255);
-  text("Strawberries: " + score, 20, 50)
+  text("Score: " + score, 400, 50)
   // game over text
   textSize(40);
   fill(0, vis);
-  text("GAME OVER", 120, 250);
+  text("GAME OVER", 120, 280);
   
   // make cloud background "move"
   image(cloudsImg, x1, 0, width, height);
@@ -63,53 +71,79 @@ function draw() {
     x2 = width;
   }
   
-  // create sprite groups
-  createStrawberry();
-  createPoison();
-  
-  // strawberry condition
-  if (roll.overlaps(strawberryG)) {
-    strawberry.remove();
-    score += 50;
-  } else if (roll.overlaps(poisonG)) {
-    strawberry.remove();
-    roll.y = 250;
-    vis = 255;
+  if (frameCount % 50 == 0) {
+    createStrawberry();
+  }
+
+  if (frameCount % 90 == 0) {
+    createPoison();
   }
   
-  //roll.y = mouseY;
-  //roll.x = mouseX;
-  roll.moveTowards(mouse);
+  if (frameCount % 70 == 0) {
+    createFlour();
+  }
+  
+  // overlap conditions
+  if (roll.overlaps(strawberryG)) {
+    strawberryG.remove();
+    score += 20;
+  } else if (roll.overlaps(flourG)) {
+    flourG.remove();
+    //collect();
+    score += 20;
+  } else if (roll.overlaps(poisonG)) {
+    roll.y = 250;
+    gameOver = true;
+  }
+  
+  if (gameOver) {
+    vis = 255;
+    strawberryG.removeAll();
+    flourG.removeAll();
+    poisonG.removeAll();
+    textSize(20);
+    text("Score: " + score, 130, 220);
+    image(cakeImg, 250, 150)
+    textSize(12);
+    text("Nice cake ;) refresh to play again", 150, 310)
+  }
+
+  roll.position.x = mouseX;
+  roll.position.y = mouseY;
+  
 }
 
 
 function createStrawberry() {
+  strawberryG = new Group();
   i1 = round(random(500));
   i2 = round(random(500));
-  if (frameCount % 50 == 0) {
-    let strawberry = new Sprite(i1, i2);
-    
-    strawberry.addImage(strawberryImg);
-    strawberry.scale = 0.5;
-    strawberry.velocity.x = -3;
-    strawberry.lifetime = 150;
-    strawberryG.add(strawberry);
-  }
+  let strawberry = new Sprite(i1, i2);
+  strawberry.addImage(strawberryImg);
+  strawberry.velocity.x = -3;
+  strawberry.lifetime = 150;
+  strawberryG.add(strawberry);
+}
+
+function createFlour() {
+  flourG = new Group();
+  i1 = round(random(500));
+  i2 = round(random(500));
+  let flour = createSprite(i1, i2);
+    flour.addImage(flourImg);
+    flour.velocity.x = -3;
+    flour.lifetime = 150;
+    //flourG.amount = 1;
+    flourG.add(flour);
 }
 
 function createPoison() {
+  poisonG = new Group();
   i1 = round(random(250, 500));
   i2 = round(random(500));
-  if (frameCount % 90 == 0) {
-    let poison = new Sprite(i1, i2);
-    poison.addImage(poisonImg);
-    poison.velocity.x = -3;
-    poison.lifetime = 150;
-    poisonG.add(poison);
-  }
-}
-
-function collect (roll, block) {
-  console.log("gottem");
-  block.remove();
+  let poison = new Sprite(i1, i2);
+  poison.addImage(poisonImg);
+  poison.velocity.x = -3;
+  poison.lifetime = 150;
+  poisonG.add(poison);
 }

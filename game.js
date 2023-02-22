@@ -10,12 +10,12 @@ let gameOver = false;
 let scrollSpeed = 3;
 
 function preload() {
-  rollImg = loadImage("roll.png");
-  cloudsImg = loadImage("clouds.png");
-  strawberryImg = loadImage("strawberry.png");
-  poisonImg = loadImage("poison.png");
-  flourImg = loadImage("flour.png");
-  cakeImg = loadImage("cake.png");
+  rollImg = loadImage("/images/roll.png");
+  cloudsImg = loadImage("/images/clouds.png");
+  strawberryImg = loadImage("/images/strawberry.png");
+  poisonImg = loadImage("/images/poison.png");
+  flourImg = loadImage("/images/flour.png");
+  cakeImg = loadImage("/images/cake.png");
 }
 
 function setup() {
